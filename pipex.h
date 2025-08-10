@@ -1,0 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: milija-h <milija-h@student.42vienna.c      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
+/*   Updated: 2025/08/02 17:18:14 by milija-h         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PIPEX_H
+# define PIPEX_H
+
+# define LIMITER
+# define BUFFER_SIZE 10
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+//#include "libft/libft.h"
+
+typedef struct s_pipex
+{
+    int fd1;
+    int fd2;
+    int fd;
+    size_t  i;
+    size_t  j;
+}   p_pipex;
+
+
+//int     main(int argc, char **argv, char ***envp);
+void    arg_parsing(int argc, char **argv);
+void    safe_exit(char *str);
+void    free_split(char **split);
+
+#endif
