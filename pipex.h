@@ -23,21 +23,32 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-//#include "libft/libft.h"
+#include "libft/libft.h"
+
+typedef struct s_cmd
+{
+    char **args;   // {"ls", "-l", NULL}
+    char *path;    // "/bin/ls"
+}   t_cmd;
 
 typedef struct s_pipex
 {
-    int fd1;
-    int fd2;
-    int fd;
+    int     infile;
+    int     outfile;
+    int     heredoc;
+    char    *limiter;
+    t_cmd   *cmds;
+    int     cmd_count;
     size_t  i;
     size_t  j;
-}   p_pipex;
+    size_t  z;
+}   t_pipex;
 
 
 //int     main(int argc, char **argv, char ***envp);
 void    arg_parsing(int argc, char **argv);
 void    safe_exit(char *str);
 void    free_split(char **split);
+char *get_path(char *cmd, char **envp);
 
 #endif

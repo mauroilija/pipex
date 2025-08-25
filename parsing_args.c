@@ -12,85 +12,71 @@
 
 #include "pipex.h"
 
-void    arg_parsing(int argc, char **argv, char ***envp)
+void    arg_parsing(int argc, char **av, char ***envp)
 {
-    p_pipex p;
-    char    **cmd_arr;
+    t_pipex p;
+    t_cmd   c;
 
+    p.infile = open("input_file.txt", O_CREAT | O_WRONLY | O_TRUNC , 0664);
+    p.outfile = open("output_file.txt", O_CREAT | O_WRONLY | O_TRUNC, 0664);
     p.i = 2;
-    p.fd1= open("input.txt", O_RDONLY);
-    if (p.fd1 < 0)
-        safe_exit("Could not open/create file1\n");
-    p.fd2 = open("output.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644); //0644 = user can read+write
-    if (p.fd2 < 0)
-        safe_exit("Could not open/create file2\n");
     while (p.i < argc - 2)
     {
-        cmd_arr = ft_split(argv[p.i], ' ');
-        if (!cmd_arr)
-            return (free_split(cmd_arr));
-        p.j = 0;
-        while (cmd_arr[p.j])
-        {
-            get_path(cmd_arr[p.i], cmd_arr);
-            p.j++;
-        }
+        c.args = ft_split(av[p.i], ' '); //issue with **av instead of av?
+        if (!c.args)
+            safe_exit("Error splitting\n");
+        c.path = get_path(c.args[0], envp);
         p.i++;
     }
 }
 
-char    *get_path(const char  *cmd, char **envp)
+/*this function checks if the output command exists and is executable
+    -first we check for the possibility of having absolute/relative paths, normally
+separated by '/'
+    -if the previous if is not met, we look for the full path in the envp:
+    we find the PATH= and create a new array that holds everything after the '='
+    we afterwards split it into ':' and use access to check if the command found exists
+    and is executable, if so, we return that value and free the previous array
+*/
+char *get_path(char *cmd, char **envp)
 {
-    p_pipex p;
-    char **path;
-    char *cmd_path;
-    char *full_path;
+    t_pipex p;
+    char    **cmd_args;
+    char    **path_line;
+    char    **full_path;
 
-    if (cmd[p.i++] == '/')
+    if (ft_strchr(cmd, '/')) //checking for absolute/relative path
     {
-        if (access(cmd, F_OK | R_OK | X_OK) == 0)
-            return (cmd);
+        if (access(cmd_args[p.j], X_OK) == 0)
+            return (ft_strdup(cmd));
+        else
+            return (NULL);
     }
-    if (!envp)
-        return (NULL);
-    p.i = 0;
-    path = NULL;
-    while (envp[p.i] != NULL)
+    else //get path enviroment
     {
-        if (strncmp(envp[p.i], "PATH=", 5) == 0)
+        p.i = 0;
+        while (envp[p.i])
         {
-            path = envp[p.i + 5];
-            if (!path)    
-                free_split(path);
-            break ;
+            if (ft_strncmp(envp[p.i], "PATH=", 5) == 0)
+            {
+                path_line = ft_strdup(envp[p.i] + 5);
+                if (!path_line)
+                    return (free(path_line), NULL);
+            }
+            p.i++;
+        }
+        p.i = 0;
+        while (path_line[p.i]) //potentially need to create a char* to return it?
+        {
+            full_path = ft_split(path_line, ':');
+            if (!full_path)
+                return (free_split(full_path), NULL);
+            if (access(full_path, X_OK) == 0)
+                return (free_split(path_line), full_path);
+            free(full_path);
             p.i++;
         }
     }
-    cmd_path = ft_split(path, ':');
-    if (!cmd_path)
-        return (NULL);
-    p.i = 0;
-    while (cmd_path[p.i])
-    {
-       full_path = ft_strjoin(cmd_path, '/');
-        if (access(cmd, F_OK | R_OK | X_OK) == 0)
-        
-    }
+    free_split(full_path);
     return (NULL);
-}
-
-char *here_doc(char *str, char *limiter)
-{
-    p_pipex p;
-
-    p.i = 0;
-    while (p.i != limiter)
-    {
-        if (str[p.i] == "here_doc.txt")
-        {
-            
-        }
-        p.i++;
-    }
-    return;
 }

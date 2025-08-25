@@ -14,9 +14,13 @@
 
 int	main(int argc, char **argv, char ***envp)
 {
-	if (argc < 5)
-		safe_exit("Not enough arguments to execute the program\n");
-	else
-		argv[1] = "input.txt";
-		argv[argc - 1] = "output.txt"
+	if (argc >= 4)
+	{
+		if (argv[1] == "here_doc")
+			here_doc_mode();
+		else
+			normal_mode();
+	}
+
+
 }

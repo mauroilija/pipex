@@ -20,7 +20,7 @@ void    safe_exit(char *str)
 
 void    free_split(char **split)
 {
-    p_pipex p;
+    t_pipex p;
 
     p.i = 0;
     while (split[p.i])
