@@ -16,7 +16,8 @@ CFLAGS = -Wall -Wextra -Werror -g
 #file utilities
 RM = rm -f
 #source and object files
-SRCS = parsing_args.c main.c pipex.c test.c utils.c pipex_bonus.c utils_bonus.c
+SRCS = parsing_args.c main.c pipex.c test.c utils.c pipex_bonus.c utils_bonus.c \
+here_doc.c
 OBJS = $(SRCS:.c=.o)
 #libft setup
 LIBFT_DIR = libft

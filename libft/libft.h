@@ -18,6 +18,8 @@
 # include <stdarg.h>
 # include <limits.h>
 
+#define BUFFER_SIZE 100
+
 typedef struct s_list
 {
 	void			*content;
@@ -70,6 +72,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 //printf functions
 int		print_char(char c);
 int		print_string(char *s);
@@ -84,5 +87,12 @@ int		ft_printf(const char *format, ...);
 int		ft_formats(va_list args, const char format);
 long	ft_atol(const char *str);
 void	free_partial(char **array, size_t j);
+//get_next_line functions
+char    *print_line(char *stash);
+char    *clean_stash(char *stash);
+char    *free_stash_if_line_null(char *stash, char *line);
+void    *ft_edge_cases(int fd, char *stash, ssize_t *read_bytes);
+char    *get_next_line(int fd);
+char	*strjoin_free(char *s1, char *s2);
 
 #endif
