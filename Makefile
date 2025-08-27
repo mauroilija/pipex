@@ -3,29 +3,32 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: milija-h <milija-h@student.42vienna.c      +#+  +:+       +#+         #
+#    By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/05 19:52:55 by milija-h          #+#    #+#              #
-#    Updated: 2025/08/05 19:52:58 by milija-h         ###   ########.fr        #
+#    Updated: 2025/08/27 13:20:15 by milija-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #compiler flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
+
 #file utilities
 RM = rm -f
+
 #source and object files
-SRCS = parsing_args.c main.c pipex.c test.c utils.c pipex_bonus.c utils_bonus.c \
-here_doc.c
+SRCS = parsing_args.c main.c utils.c here_doc.c execution.c
 OBJS = $(SRCS:.c=.o)
+
 #libft setup
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
+
 #program name
 NAME = pipex
-#Rules
 
+#Rules
 all: $(LIBFT) $(NAME) 
 
 $(LIBFT):

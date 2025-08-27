@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milija-h <milija-h@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 20:03:08 by milija-h          #+#    #+#             */
-/*   Updated: 2025/04/27 21:11:37 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/08/27 09:28:07 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-static char	*ft_edge_cases(char const *s1, char const *s2)
+static char	*ft_edge_cases_join(char const *s1, char const *s2)
 {
 	if (s1 == NULL)
 		return (ft_strdup(s2));
@@ -29,7 +30,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = 0;
 	if (!s1 && !s2)
 		return (NULL);
-	s3 = ft_edge_cases(s1, s2);
+	s3 = ft_edge_cases_join(s1, s2);
 	if (s3 != NULL)
 		return (s3);
 	s3 = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);

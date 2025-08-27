@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/26 17:22:14 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:54:46 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PIPEX_H
 
 # define LIMITER "EOF"
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE 100
 
 #include <stdio.h>
 #include <string.h>
@@ -36,13 +36,13 @@ typedef struct s_pipex
     int     infile;
     int     outfile;
     int     heredoc;
-    char    *limiter;
-    t_cmd   *cmds;
+    int     i;
     int     cmd_count;
-    size_t  i;
-    size_t  j;
-    size_t  z;
+    char    *limiter;
     char    *lines;
+    t_cmd   *cmds;
+    size_t  j;
+    size_t  index;
 }   t_pipex;
 
 

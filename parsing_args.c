@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_args.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milija-h <milija-h@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/06 17:52:52 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/08/27 12:55:14 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_pipex   normal_parsing(int argc, char **av, char **envp)
 {
     t_pipex p;
     t_cmd   c;
-    size_t  index;
 
     p.infile = open(av[1], O_RDONLY);
     p.outfile = open(av[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
@@ -32,16 +31,18 @@ t_pipex   normal_parsing(int argc, char **av, char **envp)
     if (!p.cmds)
         safe_exit("Malloc error\n");
     p.i = 2;
-    index = 0;
-    while (p.i < argc - 2)
+    p.index = 0;
+    while (p.i < argc - 1)
     {
         c.args = ft_split(av[p.i], ' '); //issue with **av instead of av?
         if (!c.args)
             safe_exit("Error splitting\n");
         c.path = get_path(c.args[0], envp);
-        p.cmds[index].args = c.args;
-        p.cmds[index].path = c.path;
-        index++;
+        if (!c.path)
+            safe_exit("Command not found\n");
+        p.cmds[p.index].args = c.args;
+        p.cmds[p.index].path = c.path;
+        p.index++;
         p.i++;
     }
     return (p);
@@ -88,7 +89,7 @@ char *get_path(char *cmd, char **envp)
         }
         directories = ft_split(path_line, ':');
         if (!directories)
-                return (free_split(directories), NULL);
+                return (NULL);
         free(path_line);
         p.i = 0;
         while (directories[p.i])
