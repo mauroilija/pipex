@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/27 12:55:14 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/08/28 17:55:55 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,28 @@ separated by '/'
 */
 char *get_path(char *cmd, char **envp)
 {
-    t_pipex p;
     char    *path_line; // dup string of envp
-    char    *full_path; // actual path
     char    **directories;
-    size_t  bufsize;
+    char    *result;
 
+    result = absolute_path(cmd);
+    if (result)
+        return (result);
+    path_line = get_path_line(envp);
+    if (!path_line)
+        return (NULL);
+    directories = ft_split(path_line, ':');
+    if (!directories)
+        return (free(path_line), NULL);
+    result = fill_full_path(directories, cmd);
+    if (!result)
+        return(free_split(directories), NULL);
+    free_split(directories);
+    return (result);
+}
+
+char    *absolute_path(char *cmd)
+{
     if (ft_strchr(cmd, '/')) //checking for absolute and relative path
     {
         if (access(cmd, X_OK) == 0)
@@ -73,47 +89,55 @@ char *get_path(char *cmd, char **envp)
         else
             return (NULL);
     }
-    else //get path enviroment
+    return (NULL);
+}
+
+char    *get_path_line(char **envp)
+{
+    t_pipex p;
+    char    *path_line;;
+
+    p.i = 0;
+    while (envp[p.i])
     {
-        p.i = 0;
-        while (envp[p.i])
+        if (ft_strncmp(envp[p.i], "PATH=", 5) == 0)
         {
-            if (ft_strncmp(envp[p.i], "PATH=", 5) == 0)
+            path_line = ft_strdup(envp[p.i] + 5);
+            if (!path_line)
             {
-                path_line = ft_strdup(envp[p.i] + 5);
-                if (!path_line)
-                    return (free(path_line), NULL);
-                break ;
+                return (free(path_line), NULL);
             }
-            p.i++;
+            return (path_line);
         }
-        directories = ft_split(path_line, ':');
-        if (!directories)
-                return (NULL);
-        free(path_line);
-        p.i = 0;
-        while (directories[p.i])
+        p.i++;
+    }
+    return (NULL);
+}
+
+char    *fill_full_path(char **directories, char *cmd)
+{
+    t_pipex p;
+    char    *result;
+
+    p.i = -1;
+    while (directories[++p.i])
         {
-            bufsize = ft_strlen(directories[p.i]) + 1 + ft_strlen(cmd) + 1;
-            full_path = malloc(bufsize);
-            if (!full_path)
+            p.bufsize = ft_strlen(directories[p.i]) + 1 + ft_strlen(cmd) + 1;
+            p.full_path = malloc(p.bufsize);
+            if (!p.full_path)
                 return (free_split(directories), NULL);
-            ft_strlcpy(full_path, directories[p.i], bufsize);
-            ft_strlcat(full_path, "/", bufsize);
-            ft_strlcat(full_path, cmd, bufsize);
-            if (access(full_path, X_OK) == 0)
+            ft_strlcpy(p.full_path, directories[p.i], p.bufsize);
+            ft_strlcat(p.full_path, "/", p.bufsize);
+            ft_strlcat(p.full_path, cmd, p.bufsize);
+            if (access(p.full_path, X_OK) == 0)
             {
-                char    *result = ft_strdup(full_path);
+                result = ft_strdup(p.full_path);
                 if (!result)
-                    return (free(full_path), NULL);
-                free(full_path);
-                free_split(directories);
+                    return (free(p.full_path), NULL);
+                free(p.full_path);
                 return (result);
             }
-            free(full_path);
-            p.i++;
+            free(p.full_path);
         }
-    }
-    free_split(directories);
     return (NULL);
 }
