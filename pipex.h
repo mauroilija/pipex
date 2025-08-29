@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/28 17:02:13 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/08/29 15:26:40 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_cmd
 {
     char **args;
     char *path;
+    char **envp
 }   t_cmd;
 
 typedef struct s_pipex
@@ -38,6 +39,7 @@ typedef struct s_pipex
     int     heredoc;
     int     i;
     int     cmd_count;
+    int     pipe_fd[2];
     char    *limiter;
     char    *lines;
     char    *full_path;
@@ -56,9 +58,12 @@ char        *fill_full_path(char **directories, char *cmd);
 t_pipex     normal_parsing(int argc, char **av, char **envp);
 char        *get_path(char *cmd, char **envp);
 char        *here_doc_reader(char *limiter);
+//execution
+void    execute(char **cmds, int argc, char **av, int cmd_count);
+void    child_process(t_cmd *cmd, int infile_fd, int outfile_fd, int prev_pipe, int next_pipe);
+int    parent_process(int pipe_fd[2], int prev_pipe, pid_t child_pid);
 //utils
 void        safe_exit(char *str);
 void        free_split(char **split);
-
 
 #endif
