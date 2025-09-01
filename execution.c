@@ -6,14 +6,14 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:19:46 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/29 15:09:31 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/01 10:06:08 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 //this functions execute all the necessary commands
-void    execute(char **cmds, int argc, char **av, int cmd_count)
+void    execute(t_cmd *cmds, int argc, char **av, int cmd_count)
 {
     t_pipex p;
     int     prev_pipe;
@@ -42,7 +42,7 @@ void    execute(char **cmds, int argc, char **av, int cmd_count)
                 next_pipe = p.outfile;
             else
                 next_pipe = p.pipe_fd[1];
-            child_process(&p.cmds[p.i], p.infile, p.outfile, prev_pipe, next_pipe);
+            child_process(cmds[p.i], p.infile, p.outfile, prev_pipe, next_pipe);
         }
         else // PARENT
             prev_pipe = parent_process(p.pipe_fd, prev_pipe, child_pid);
@@ -53,11 +53,8 @@ void    execute(char **cmds, int argc, char **av, int cmd_count)
         ;
 }
 
-void    child_process(t_cmd *cmd, int infile_fd, int outfile_fd, int prev_pipe, int next_pipe)
+void    child_process(t_cmd cmd, int infile_fd, int outfile_fd, int prev_pipe, int next_pipe)
 {
-    t_cmd   p;
-    t_cmd   pp;
-
     if (prev_pipe)
         dup2(prev_pipe, STDIN_FILENO);
     else
@@ -72,11 +69,9 @@ void    child_process(t_cmd *cmd, int infile_fd, int outfile_fd, int prev_pipe, 
         close(next_pipe);
     close(infile_fd);
     close(outfile_fd);
-    if (execve(p.path, p.args, p.envp) == -1);
-    {
-        perror("execve error");
-        exit(127);
-    }
+    execve(cmd.path, cmd.args, NULL);
+    perror("execve error");
+    exit(127);
 }
 
 int    parent_process(int pipe_fd[2], int prev_pipe, pid_t child_pid)
@@ -87,8 +82,8 @@ int    parent_process(int pipe_fd[2], int prev_pipe, pid_t child_pid)
     if (prev_pipe != 0)
         close(prev_pipe);
     new_pipe = pipe_fd[0];
-    if (new_pipe == -1);
+    if (new_pipe == -1)
         safe_exit("Error piping\n");
-    waitpid(&child_pid, NULL, 0);
+    waitpid(child_pid, NULL, 0);
     return (new_pipe);
 }

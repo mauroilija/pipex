@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/29 15:26:40 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:15:11 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_cmd
 {
     char **args;
     char *path;
-    char **envp
+    char **envp;
 }   t_cmd;
 
 typedef struct s_pipex
@@ -55,13 +55,14 @@ int         main(int argc, char **argv, char **envp);
 char        *absolute_path(char *cmd);
 char        *get_path_line(char **envp);
 char        *fill_full_path(char **directories, char *cmd);
-t_pipex     normal_parsing(int argc, char **av, char **envp);
+t_pipex     normal_parsing(int argc, char **av, char **envp, int start);
 char        *get_path(char *cmd, char **envp);
 char        *here_doc_reader(char *limiter);
 //execution
-void    execute(char **cmds, int argc, char **av, int cmd_count);
-void    child_process(t_cmd *cmd, int infile_fd, int outfile_fd, int prev_pipe, int next_pipe);
+void    execute(t_cmd *cmds, int argc, char **av, int cmd_count);
+void    child_process(t_cmd cmd, int infile_fd, int outfile_fd, int prev_pipe, int next_pipe);
 int    parent_process(int pipe_fd[2], int prev_pipe, pid_t child_pid);
+void    execute_here_doc(char **av, int argc, char **envp);
 //utils
 void        safe_exit(char *str);
 void        free_split(char **split);

@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:47:04 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/27 10:42:57 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:01:14 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ the limiter is found: we have to if statements:
 each time and concatenate the line buffer (current_line) into our final lines, which
 gets returned as when limiter is then found
 */
-char    *here_doc_reader(char *limiter) // im a bit lost not gonna lie
+char    *here_doc_reader(char *limiter)
 {
     char    *lines; // will return all in between heredoc and limiter
     char    *current_line; // receives lines slowly as we read
@@ -38,7 +38,7 @@ char    *here_doc_reader(char *limiter) // im a bit lost not gonna lie
             && current_line[ft_strlen(limiter)] == '\n')
         {
             free(current_line);
-            break;
+            break ;
         }
         else
         {
@@ -52,4 +52,32 @@ char    *here_doc_reader(char *limiter) // im a bit lost not gonna lie
         }
     }
     return (lines);
+}
+
+void    execute_here_doc(char **av, int argc, char **envp)
+{
+    char    *limiter;
+    char    *output;
+    int     tmp_fd;
+    t_pipex parsed;
+    t_pipex p;
+
+    limiter = av[2];
+    tmp_fd = open("temp_file.txt", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+    if (tmp_fd < 0)
+        safe_exit("Error opening file\n");
+    output = here_doc_reader(limiter);
+    if (!output)
+        safe_exit("Error readin here_doc\n");
+    write(tmp_fd, output, ft_strlen(output));
+    free(output);
+    close(tmp_fd);
+    parsed = normal_parsing(argc, av, envp, 3);
+    parsed.infile = open("temp_file.txt", O_RDONLY);
+    if (p.infile < 0)
+        safe_exit("Error opening temp file\n");
+    p.cmds = parsed.cmds;
+    p.cmd_count = parsed.cmd_count;
+    execute(p.cmds, argc, av, p.cmd_count);
+    unlink("temp_file.txt");
 }

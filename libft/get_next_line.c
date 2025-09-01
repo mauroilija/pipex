@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milija-h <milija-h@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:10:34 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/26 15:17:17 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:17:47 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,6 @@ char	*clean_stash(char *stash)
 	new[j] = '\0';
 	free(stash);
 	return (new);
-}
-
-char	*free_stash_if_line_null(char *stash, char *line)
-{
-	if (!line)
-	{
-		free(stash);
-		stash = NULL;
-	}
-	return (stash);
 }
 
 void	*ft_edge_cases(int fd, char *stash, ssize_t *read_bytes)

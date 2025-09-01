@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/08/29 07:59:35 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:10:41 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
     split the args by space (by word), use our get path function to save the path
     of the the command in path and fill the struct up, so we can then return it
 */
-t_pipex   normal_parsing(int argc, char **av, char **envp)
+t_pipex     normal_parsing(int argc, char **av, char **envp, int start)
 {
     t_pipex p;
     t_cmd   c;
@@ -30,7 +30,7 @@ t_pipex   normal_parsing(int argc, char **av, char **envp)
     p.cmds = malloc((p.cmd_count) * sizeof(t_cmd));
     if (!p.cmds)
         safe_exit("Malloc error\n");
-    p.i = 2;
+    p.i = start;
     p.index = 0;
     while (p.i < argc - 1)
     {

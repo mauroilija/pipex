@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milija-h <milija-h@student.42vienna.c      +#+  +:+       +#+        */
+/*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:34 by milija-h          #+#    #+#             */
-/*   Updated: 2025/05/07 01:48:40 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/01 17:19:58 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef LIBFT_H
 # define LIBFT_H
 
@@ -18,7 +19,7 @@
 # include <stdarg.h>
 # include <limits.h>
 
-#define BUFFER_SIZE 100
+# define BUFFER_SIZE 100
 
 typedef struct s_list
 {
@@ -88,11 +89,11 @@ int		ft_formats(va_list args, const char format);
 long	ft_atol(const char *str);
 void	free_partial(char **array, size_t j);
 //get_next_line functions
-char    *print_line(char *stash);
-char    *clean_stash(char *stash);
-char    *free_stash_if_line_null(char *stash, char *line);
-void    *ft_edge_cases(int fd, char *stash, ssize_t *read_bytes);
-char    *get_next_line(int fd);
+char	*print_line(char *stash);
+char	*clean_stash(char *stash);
+char	*free_stash_if_line_null(char *stash, char *line);
+void	*ft_edge_cases(int fd, char *stash, ssize_t *read_bytes);
+char	*get_next_line(int fd);
 char	*strjoin_free(char *s1, char *s2);
 
 #endif
