@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:34 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/01 17:19:58 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/03 19:13:44 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_tolower(int ab);
 int		ft_toupper(unsigned int ch);
+int		ft_strcmp(char *s1, char *s2);
 
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
@@ -91,9 +92,9 @@ void	free_partial(char **array, size_t j);
 //get_next_line functions
 char	*print_line(char *stash);
 char	*clean_stash(char *stash);
-char	*free_stash_if_line_null(char *stash, char *line);
 void	*ft_edge_cases(int fd, char *stash, ssize_t *read_bytes);
 char	*get_next_line(int fd);
 char	*strjoin_free(char *s1, char *s2);
+char	*free_stash_if_line_null(char *stash, char *line);
 
 #endif

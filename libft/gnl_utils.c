@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   gnl_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/06 17:22:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/03 19:24:10 by milija-h         ###   ########.fr       */
+/*   Created: 2025/09/03 12:04:27 by milija-h          #+#    #+#             */
+/*   Updated: 2025/09/03 12:04:35 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-int	main(int argc, char **argv, char **envp)
+char	*free_stash_if_line_null(char *stash, char *line)
 {
-	//char	*result;
-	t_pipex	p;
-
-	if (argc >= 4)
+	if (!line)
 	{
-		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-		{
-			execute_here_doc(argv, argc, envp);
-			//result = here_doc_reader(argv[2]);
-		}
-		else
-		{
-			p = normal_parsing(argc, argv, envp, 2);
-			execute(p.cmds, argc, argv, p.cmd_count);
-		}
+		free(stash);
+		stash = NULL;
 	}
-	return (0);
+	return (stash);
 }
