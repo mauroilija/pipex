@@ -6,48 +6,48 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:19:46 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/03 20:31:15 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/04 19:44:11 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-// checck for exit codes
+// check for exit codes echo $?
 //this functions execute all the necessary commands
-void	execute(t_cmd *cmds, int argc, char **av, int cmd_count)
+int	execute(t_cmd *cmds, int argc, char **av, int cmd_count)
 {
 	t_pipex	p;
 	int		prev_pipe;
 	int		next_pipe;
+	pid_t	*child_pids;
 	pid_t	child_pid;
+	pid_t	exit_code;
 
 	if (argc > 1 && ft_strncmp(av[1], "here_doc", 8) == 0)
 	{
 		p.infile = open("temp_file.txt", O_RDONLY);
-		if (p.infile < 0)
-			safe_exit("Error opening infile0\n");
 		p.outfile = open(av[argc -1], O_CREAT | O_WRONLY | O_APPEND, 0664);
-		if (p.outfile < 0)
-			safe_exit("Error opening outfile\n");
 	}
 	else
 	{
 		p.infile = open(av[1], O_RDONLY);
-		if (p.infile < 0)
-			safe_exit("Error opening infile\n");
 		p.outfile = open(av[argc -1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-		if (p.outfile < 0)
-			safe_exit("Error opening outfile\n");
 	}
+	if (p.infile < 0 || p.outfile < 0)
+		exit(74);
 	prev_pipe = p.infile;
+	child_pids = malloc(sizeof(pid_t));
+	if (!child_pids)
+		return (0);
 	p.i = -1;
+	child_pid = 0;
 	while (++p.i < cmd_count)
 	{
 		if (p.i < cmd_count - 1)
 			if (pipe(p.pipe_fd) == -1)
-				safe_exit("Pipe failed\n");
+				exit (-1);
 		child_pid = fork();
 		if (child_pid == -1)
-			safe_exit("Fork failed\n");
+			exit (-1);
 		if (child_pid == 0) // CHILD
 		{
 			if (p.i == cmd_count - 1)
@@ -57,12 +57,31 @@ void	execute(t_cmd *cmds, int argc, char **av, int cmd_count)
 			child_process(cmds[p.i], p.infile, p.outfile, prev_pipe, next_pipe);
 		}
 		else // PARENT
-			prev_pipe = parent_process(p.pipe_fd, prev_pipe, child_pid);
+		{
+			child_pids[p.i] = child_pid;
+			if (p.i < cmd_count - 1)
+				close(p.pipe_fd[1]);
+			if (prev_pipe != p.infile)
+				close (prev_pipe);
+			if (p.i < cmd_count - 1)
+				close(p.pipe_fd[0]);
+		}
 	}
+	free(child_pids);
 	close(prev_pipe);
 	close(p.outfile);
-	while (wait(NULL) > 0)
-		;
+	exit_code = 0;
+	p.i = 0;
+	while (p.i < cmd_count -1)
+	{
+		p.status = wait(&child_pid);
+		if (WIFEXITED(p.status))
+			exit_code = WEXITSTATUS(p.status);
+		else if (WIFSIGNALED(p.status))
+			exit_code = 128 + WTERMSIG(p.status);
+		p.i++;
+	}
+	return (exit_code);
 }
 
 void	child_process(t_cmd cmd, int infile_fd, int outfile_fd, int prev_pipe, int next_pipe)
@@ -86,11 +105,3 @@ void	child_process(t_cmd cmd, int infile_fd, int outfile_fd, int prev_pipe, int 
 	exit(127);
 }
 
-int	parent_process(int pipe_fd[2], int prev_pipe, pid_t child_pid)
-{
-	close(pipe_fd[1]);
-	if (prev_pipe >= 0 && prev_pipe != STDIN_FILENO)
-		close(prev_pipe);
-	waitpid(child_pid, NULL, 0);
-	return (pipe_fd[0]);
-}

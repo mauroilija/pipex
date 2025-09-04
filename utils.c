@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:52:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/03 13:05:07 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/04 18:41:39 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	safe_exit(char *str)
 {
-	perror(str),
+	perror(str);
 	exit(EXIT_FAILURE);
 }
 

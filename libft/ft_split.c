@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: milija-h <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:24:23 by milija-h          #+#    #+#             */
-/*   Updated: 2025/05/19 18:13:28 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/04 15:19:40 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 static size_t	ft_nbr_of_words(char const *str, char c)

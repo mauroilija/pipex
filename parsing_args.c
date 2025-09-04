@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/03 19:54:02 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:42:32 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_pipex	normal_parsing(int argc, char **av, char **envp, int start)
 	t_pipex		p;
 	t_cmd		c;
 
-	//p.infile = open(av[1], O_RDONLY);
-	//p.outfile = open(av[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	p.cmd_count = argc - start - 1;
 	p.cmds = malloc((p.cmd_count) * sizeof(t_cmd));
 	if (!p.cmds)
@@ -34,7 +32,7 @@ t_pipex	normal_parsing(int argc, char **av, char **envp, int start)
 	p.index = 0;
 	while (p.i < argc - 1)
 	{
-		c.args = ft_split(av[p.i], ' '); //issue with **av instead of av?
+		c.args = ft_split(av[p.i], ' ');
 		if (!c.args)
 			safe_exit("Error splitting\n");
 		c.path = get_path(c.args[0], envp);

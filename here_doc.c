@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:47:04 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/03 20:41:01 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/04 16:20:38 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,31 @@ which gets returned as when limiter is then found
 */
 char	*here_doc_reader(char *limiter)
 {
-	char		*lines;
-	char		*updated_line;
+	t_vars	p;
 
-	lines = NULL;
-	updated_line = NULL;
-	//total_len = 0;
+	p.lines = NULL;
+	p.up_line = NULL;
+	p.t_len = 0;
 	while (1)
 	{
-		updated_line = get_next_line(0);
-		if (!updated_line)
-			break ;
-		if (ft_strcmp(updated_line, limiter) == 0)
+		p.up_line = get_next_line(0);
+		if (!p.up_line || ft_strncmp(p.up_line, limiter, ft_strlen(limiter)) == 0)
 		{
-			free(updated_line);
+			free(p.up_line);
 			break ;
 		}
 		else
-			lines = lines_returned(updated_line);
+		{
+			p.new_size = p.t_len + ft_strlen(p.up_line) + 1;
+			p.lines = ft_realloc(p.lines, p.t_len + 1, p.new_size);
+			if (!p.lines)
+				return (NULL);
+			ft_strlcpy(p.lines + p.t_len, p.up_line, ft_strlen(p.up_line) + 1);
+			p.t_len += ft_strlen(p.up_line);
+			free(p.up_line);
+		}
 	}
-	return (lines);
+	return (p.lines);
 }
 
 void	execute_here_doc(char **av, int argc, char **envp)
@@ -69,20 +74,3 @@ void	execute_here_doc(char **av, int argc, char **envp)
 	unlink("temp_file.txt");
 }
 
-char	*lines_returned(char *current_line)
-{
-	size_t	new_size;
-	size_t	total_len;
-	char	*lines;
-
-	total_len = 0;
-	lines = NULL;
-	new_size = total_len + ft_strlen(current_line) + 1;
-	lines = ft_realloc(lines, total_len + 1, new_size);
-	if (!lines)
-		return (NULL);
-	ft_strlcpy(lines + total_len, current_line, ft_strlen(current_line) + 1);
-	total_len += ft_strlen(current_line);
-	free(current_line);
-	return (lines);
-}
