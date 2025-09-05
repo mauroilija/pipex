@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:22:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/04 19:39:24 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/05 10:31:47 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	p;
-	int	status;
+	pid_t	status;
 
 	if (argc >= 4)
 	{

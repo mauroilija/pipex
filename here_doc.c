@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:47:04 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/04 16:20:38 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/05 14:00:01 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,3 @@ void	execute_here_doc(char **av, int argc, char **envp)
 	close(parsed.infile);
 	unlink("temp_file.txt");
 }
-

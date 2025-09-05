@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/04 16:42:32 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/05 09:44:07 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_path(char *cmd, char **envp)
 
 char	*absolute_path(char *cmd)
 {
-	if (ft_strchr(cmd, '.') || ft_strchr(cmd, '/')) //|| (cmd[0] == '.' && cmd[1] == '/')) //checking for absolute and relative path
+	if (ft_strchr(cmd, '.') || ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
