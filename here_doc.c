@@ -19,12 +19,14 @@ the limiter is found: we have to if statements:
 each time and concatenate the line buffer (current_line) into our final lines
 which gets returned as when limiter is then found
 */
-char	*here_doc_reader(char *limiter)
+char	**here_doc_reader(char *limiter)
 {
 	t_vars	p;
+	t_pipex ptr;
 
 	p.lines = NULL;
 	p.up_line = NULL;
+	ptr.lines_received = NULL;
 	p.t_len = 0;
 	while (1)
 	{
@@ -45,13 +47,17 @@ char	*here_doc_reader(char *limiter)
 			free(p.up_line);
 		}
 	}
-	return (p.lines);
+	ptr.lines_received = ft_split(p.lines, '\n');
+	if (!ptr.lines_received)
+		return (free(p.lines), NULL);
+	free(p.lines);
+	return (ptr.lines_received);
 }
 
 void	execute_here_doc(char **av, int argc, char **envp)
 {
 	char	*limiter;
-	char	*output;
+	char	**output;
 	int		tmp_fd;
 	t_pipex	parsed;
 
@@ -62,8 +68,13 @@ void	execute_here_doc(char **av, int argc, char **envp)
 	output = here_doc_reader(limiter);
 	if (!output)
 		safe_exit("Error readin here_doc\n");
-	write(tmp_fd, output, ft_strlen(output));
-	free(output);
+	for (size_t i = 0; output[i]; i++)
+	{
+   		write(tmp_fd, output[i], ft_strlen(output[i]));
+    	write(tmp_fd, "\n", 1);
+	}
+	//write(tmp_fd, output, array_len(output));
+	free_split(output);
 	close(tmp_fd);
 	parsed = normal_parsing(argc, av, envp, 3);
 	parsed.infile = open("temp_file.txt", O_RDONLY);

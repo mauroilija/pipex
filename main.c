@@ -15,8 +15,9 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	p;
-	pid_t	status;
+	//pid_t	status;
 
+	//status = 0;
 	if (argc >= 4)
 	{
 		if (ft_strncmp(argv[1], "here_doc", 8) == 0)
@@ -26,7 +27,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 		{
 			p = normal_parsing(argc, argv, envp, 2);
-			status = execute(p.cmds, argc, argv, p.cmd_count);
+			execute(p.cmds, argc, argv, p.cmd_count);
 		}
 	}
 	return (0);

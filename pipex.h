@@ -52,6 +52,7 @@ typedef struct s_pipex
 	size_t	j;
 	size_t	index;
 	size_t	bufsize;
+	char **lines_received;
 }	t_pipex;
 
 typedef struct s_vars
@@ -70,7 +71,7 @@ char		*get_path_line(char **envp);
 char		*fill_full_path(char **directories, char *cmd);
 t_pipex		normal_parsing(int argc, char **av, char **envp, int start);
 char		*get_path(char *cmd, char **envp);
-char		*here_doc_reader(char *limiter);
+char		**here_doc_reader(char *limiter);
 //execution
 int			execute(t_cmd *cmds, int argc, char **av, int cmd_count);
 void		child_process(t_cmd cmd, int prev_pipe, t_pipex *p);

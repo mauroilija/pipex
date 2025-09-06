@@ -65,6 +65,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		ft_tolower(int ab);
 int		ft_toupper(unsigned int ch);
 int		ft_strcmp(char *s1, char *s2);
+size_t	array_len(char **str);
 
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
