@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:22:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/05 10:31:47 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/07 15:10:48 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ int	main(int argc, char **argv, char **envp)
 			execute(p.cmds, argc, argv, p.cmd_count);
 		}
 	}
+	//free(p.cmds);
 	return (0);
 }

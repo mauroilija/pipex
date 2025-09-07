@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:47:04 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/05 14:00:01 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/07 15:18:34 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ which gets returned as when limiter is then found
 char	**here_doc_reader(char *limiter)
 {
 	t_vars	p;
-	t_pipex ptr;
+	char	**lines_received;
+	char	*temp;
 
-	p.lines = NULL;
+	p.lines = ft_strdup("");
+	if (!p.lines)
+		return (NULL);
 	p.up_line = NULL;
-	ptr.lines_received = NULL;
-	p.t_len = 0;
+	lines_received = NULL;
 	while (1)
 	{
 		p.up_line = get_next_line(0);
@@ -36,22 +38,20 @@ char	**here_doc_reader(char *limiter)
 			free(p.up_line);
 			break ;
 		}
-		else
-		{
-			p.new_size = p.t_len + ft_strlen(p.up_line) + 1;
-			p.lines = ft_realloc(p.lines, p.t_len + 1, p.new_size);
-			if (!p.lines)
-				return (NULL);
-			ft_strlcpy(p.lines + p.t_len, p.up_line, ft_strlen(p.up_line) + 1);
-			p.t_len += ft_strlen(p.up_line);
-			free(p.up_line);
-		}
+		temp = ft_strjoin(p.lines, p.up_line);
+		if (!temp)
+			return (free(p.lines), free(p.up_line), NULL);
+		free(p.up_line);
+		p.lines = ft_strjoin(temp, "\n");
+		if (!p.lines)
+			return (free(temp), NULL);
+		free(temp);
 	}
-	ptr.lines_received = ft_split(p.lines, '\n');
-	if (!ptr.lines_received)
+	lines_received = ft_split(p.lines, '\n');
+	if (!lines_received)
 		return (free(p.lines), NULL);
 	free(p.lines);
-	return (ptr.lines_received);
+	return (lines_received);
 }
 
 void	execute_here_doc(char **av, int argc, char **envp)

@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/05 14:15:47 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/07 14:50:44 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ typedef struct s_pipex
 	int		pipe_fd[2];
 	int		prev_pipe;
 	char	*limiter;
-	char	*lines;
 	char	*full_path;
 	pid_t	*child_pids;
 	pid_t	exit_code;
