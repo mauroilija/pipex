@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:34 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/03 19:13:44 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:48:13 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <limits.h>
 
 # define BUFFER_SIZE 100
+
+typedef struct s_var
+{
+    size_t	i;
+    size_t	j;
+    size_t	start;
+}   t_var;
 
 typedef struct s_list
 {
@@ -49,6 +56,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
+void	free_partial(char **array, size_t count);
 char	*ft_strchr(const char *str, int c);
 char	*ft_strdup(const char *s);
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
@@ -66,6 +74,8 @@ int		ft_tolower(int ab);
 int		ft_toupper(unsigned int ch);
 int		ft_strcmp(char *s1, char *s2);
 size_t	array_len(char **str);
+char	*ft_strcat(char *dest, const char *src);
+char	*ft_strcpy(char *dest, const char *src);
 
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
@@ -89,7 +99,6 @@ int		print_percent(void);
 int		ft_printf(const char *format, ...);
 int		ft_formats(va_list args, const char format);
 long	ft_atol(const char *str);
-void	free_partial(char **array, size_t j);
 //get_next_line functions
 char	*print_line(char *stash);
 char	*clean_stash(char *stash);

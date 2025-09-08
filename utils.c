@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:52:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/05 14:33:09 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/08 15:33:31 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,15 @@ void	safe_exit(char *str)
 
 void	free_split(char **split)
 {
-	t_pipex	p;
+	size_t	i;
 
-	p.i = 0;
-	while (split[p.i])
+	if (!split)
+    return ;
+	i = 0;
+	while (split[i])
 	{
-		free(split[p.i++]);
+		free(split[i]);
+		i++;
 	}
 	free(split);
 }
@@ -50,4 +53,21 @@ pid_t	exit_codee(pid_t *child_pids, int cmd_count)
 		i++;
 	}
 	return (exit_code);
+}
+
+void	free_pipex(t_pipex *p)
+{
+	int	i;
+
+	if (!p || !p->cmds)
+		return ;
+	i = 0;
+	while (i < p->cmd_count)
+	{
+		free_split(p->cmds[i].args);
+		free(p->cmds[i].path);
+		i++;
+	}
+	free (p->cmds);
+	free(p);
 }

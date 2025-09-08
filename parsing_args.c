@@ -6,56 +6,46 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/05 09:44:07 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/08 16:30:37 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*this function builds a struct with al commands
-	-we start off by opening the infile and creating the outfile
-	-we dynamically allocate memory for the struct
-	-and iterate from the first arg after infile to the arg before outfile, we
-	split the args by space (by word), use our get path function to save the path
-	of the the command in path and fill the struct up, so we can then return it
-*/
-t_pipex	normal_parsing(int argc, char **av, char **envp, int start)
+t_pipex	*normal_parsing(int argc, char **av, char **envp, int start)
 {
-	t_pipex		p;
-	t_cmd		c;
+	t_pipex	*p;
+	t_cmd	c;
 
-	p.cmd_count = argc - start - 1;
-	p.cmds = malloc((p.cmd_count) * sizeof(t_cmd));
-	if (!p.cmds)
-		safe_exit("Malloc error\n");
-	p.i = start;
-	p.index = 0;
-	while (p.i < argc - 1)
+	p = malloc(sizeof(t_pipex));
+	if (!p)
+		return (NULL);
+	p->cmd_count = argc - start - 1;
+	p->cmds = ft_calloc((p->cmd_count + 1), sizeof(t_cmd));
+	if (!p->cmds)
+		return (free(p), NULL);
+	p->i = start;
+	p->index = 0;
+	while (p->i < argc - 1)
 	{
-		c.args = ft_split(av[p.i], ' ');
+		c.args = ft_split(av[p->i], ' ');
 		if (!c.args)
-			safe_exit("Error splitting\n");
+			return (free_pipex(p), NULL);
+		if (!c.args[0])
+			return (free_split(c.args), free_pipex(p), NULL);
 		c.path = get_path(c.args[0], envp);
 		if (!c.path)
-			safe_exit("Command not found\n");
-		p.cmds[p.index].args = c.args;
-		p.cmds[p.index].path = c.path;
-		p.index++;
-		p.i++;
+			return (free_split(c.args), free_pipex(p), NULL);
+		p->cmds[p->index].args = c.args;
+		p->cmds[p->index].path = c.path;
+		p->index++;
+		p->i++;
 	}
+	p->cmds[p->index].args = NULL;
+	p->cmds[p->index].path = NULL;
 	return (p);
 }
 
-/*this function checks if the output command exists and is executable
-	-first we check for the possibility of having absolute/relative paths, normally
-separated by '/'
-	-if the previous if is not met, we look for the full path in the envp:
-	we find the PATH= and create a new array that holds everything after the '='
-	we afterwards split it into ':' and store in a directories array, then we build our
-	full path by dynamically allocating it and copying directorie into it and concatena-
-	ting into it '/' + 'cmd', later we check with access if the command exist and is
-	executable, if so, we return a duplicate of it and free the utilities
-*/
 char	*get_path(char *cmd, char **envp)
 {
 	char	*path_line;
@@ -75,12 +65,13 @@ char	*get_path(char *cmd, char **envp)
 	if (!result)
 		return (free_split(directories), NULL);
 	free_split(directories);
+	free(path_line);
 	return (result);
 }
 
 char	*absolute_path(char *cmd)
 {
-	if (ft_strchr(cmd, '.') || ft_strchr(cmd, '/'))
+	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));

@@ -6,7 +6,7 @@
 #    By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/08 19:10:45 by milija-h          #+#    #+#              #
-#    Updated: 2025/09/03 19:14:00 by milija-h         ###   ########.fr        #
+#    Updated: 2025/09/08 12:43:33 by milija-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,12 +60,13 @@ SRCS = 	ft_atoi.c \
 	ft_print_pointer.c \
 	ft_isprint.c \
 	ft_atol.c \
-	libft_utils.c \
 	ft_realloc.c \
 	get_next_line.c \
 	gnl_utils.c \
 	ft_strcmp.c \
-	array_len.c 
+	array_len.c \
+	ft_strcat.c \
+	ft_strcpy.c
 
 SRCSB = ft_lstnew_bonus.c ft_lstlast_bonus.c ft_lstadd_front_bonus.c ft_lstadd_back_bonus.c ft_lstsize_bonus.c ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c \
 get_next_line_utils.c

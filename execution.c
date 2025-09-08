@@ -6,14 +6,14 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:19:46 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/05 14:34:43 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/08 15:11:18 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 // check for exit codes echo $?
 //this functions execute all the necessary commands
-void child_process(t_cmd cmd, int prev_pipe, t_pipex *p) // good
+void	child_process(t_cmd cmd, int prev_pipe, t_pipex *p) // good
 {
 	if (prev_pipe != -1)
 		dup2(prev_pipe, STDIN_FILENO);
@@ -93,7 +93,7 @@ pid_t	execute(t_cmd *cmds, int argc, char **av, int cmd_count)
 	if (p.infile < 0 || p.outfile < 0)
 		exit(74);
 	p.prev_pipe = -1;
-	p.child_pids = malloc(sizeof(pid_t) * cmd_count);
+	p.child_pids = ft_calloc(cmd_count, sizeof(pid_t));
 	if (!p.child_pids)
 		exit(1);
 	processes(cmds, &p);

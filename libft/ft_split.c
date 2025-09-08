@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:24:23 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/04 15:19:40 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/08 14:12:32 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,18 @@ static size_t	ft_nbr_of_words(char const *str, char c)
 
 	i = 0;
 	count = 0;
-	if (str[i] == '\0')
+	if (!str)
 		return (0);
 	while (str[i])
 	{
-		while (str[i] == c)
+		while (str[i] && str[i] == c)
 			i++;
 		if (str[i])
+		{
 			count++;
-		while (str[i] != c && str[i])
-			i++;
+			while (str[i] != c && str[i])
+				i++;
+		}
 	}
 	return (count);
 }
@@ -38,7 +40,9 @@ static char	*add_words(const char *str, size_t start, size_t end)
 	char	*word;
 	size_t	i;
 
-	word = malloc(end - start + 1);
+	if (!str || end < start)
+		return (NULL);
+	word = malloc((end - start + 1) * sizeof(char));
 	if (!word)
 		return (NULL);
 	i = 0;
@@ -48,24 +52,22 @@ static char	*add_words(const char *str, size_t start, size_t end)
 	return (word);
 }
 
-static void	ft_free(char **array)
+void free_partial(char **array, size_t count)
 {
-	size_t	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		array[i++] = NULL;
-	}
-	free(array);
+    size_t i = 0;
+    if (!array)
+        return;
+    while (i < count)
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array);
 }
 
 static int	ft_fill_array(char **array, const char *s, char c)
 {
-	t_list	p;
+	t_var	p;
 
 	p.i = 0;
 	p.j = 0;
@@ -80,7 +82,7 @@ static int	ft_fill_array(char **array, const char *s, char c)
 		{
 			array[p.j] = add_words(s, p.start, p.i);
 			if (!array[p.j])
-				return (free_partial(array, p.j), 0);
+				return (0);
 			p.j++;
 		}
 	}
@@ -91,19 +93,19 @@ static int	ft_fill_array(char **array, const char *s, char c)
 char	**ft_split(char const *s, char c)
 {
 	char		**array;
+	size_t		words;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	array = (char **)malloc((ft_nbr_of_words(s, c) + 1) * sizeof(char *));
-	if (array == NULL)
+	words = ft_nbr_of_words(s, c);
+	array = (char **)malloc((words + 1) * sizeof(char *));
+	if (!array)
 		return (NULL);
 	if (!ft_fill_array(array, s, c))
-	{
-		ft_free(array);
-		return (NULL);
-	}
+		return (free_partial(array, ft_nbr_of_words(s, c)), NULL);
 	return (array);
 }
+
 /*#include <stdio.h>
 int	main(void)
 {

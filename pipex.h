@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/07 14:50:44 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:45:36 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_pipex
 	int		infile;
 	int		outfile;
 	int		heredoc;
-	int		i;
 	int		status;
 	int		cmd_count;
 	int		pipe_fd[2];
@@ -49,17 +48,17 @@ typedef struct s_pipex
 	t_cmd	*cmds;
 	char	**envp;
 	size_t	j;
+	int		i;
 	size_t	index;
 	size_t	bufsize;
-	char **lines_received;
 }	t_pipex;
 
 typedef struct s_vars
 {
 	char		*lines;
-	char		*up_line;
-	size_t		t_len;
-	size_t		new_size;
+	char		*buffer;
+	size_t		new_len;
+	size_t		len;
 }	t_vars;
 
 //main
@@ -68,9 +67,9 @@ int			main(int argc, char **argv, char **envp);
 char		*absolute_path(char *cmd);
 char		*get_path_line(char **envp);
 char		*fill_full_path(char **directories, char *cmd);
-t_pipex		normal_parsing(int argc, char **av, char **envp, int start);
+t_pipex		*normal_parsing(int argc, char **av, char **envp, int start);
 char		*get_path(char *cmd, char **envp);
-char		**here_doc_reader(char *limiter);
+char		*here_doc_reader(char *limiter);
 //execution
 int			execute(t_cmd *cmds, int argc, char **av, int cmd_count);
 void		child_process(t_cmd cmd, int prev_pipe, t_pipex *p);
@@ -81,5 +80,6 @@ pid_t		exit_codee(pid_t *child_pids, int cmd_count);
 //utils
 void		safe_exit(char *str);
 void		free_split(char **split);
+void		free_pipex(t_pipex *p);
 
 #endif
