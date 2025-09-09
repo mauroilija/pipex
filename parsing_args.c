@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/09 09:11:24 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 14:58:21 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,6 @@ char	*get_path(char *cmd, char **envp)
 	free_split(directories);
 	free(path_line);
 	return (result);
-}
-
-char	*absolute_path(char *cmd)
-{
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		else
-			return (NULL);
-	}
-	return (NULL);
 }
 
 char	*get_path_line(char **envp)

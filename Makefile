@@ -6,7 +6,7 @@
 #    By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/05 19:52:55 by milija-h          #+#    #+#              #
-#    Updated: 2025/08/27 13:20:15 by milija-h         ###   ########.fr        #
+#    Updated: 2025/09/09 10:43:54 by milija-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 
 #source and object files
-SRCS = parsing_args.c main.c utils.c here_doc.c execution.c
+SRCS = parsing_args.c main.c utils.c here_doc.c execution.c parsing_utils.c
 OBJS = $(SRCS:.c=.o)
 
 #libft setup

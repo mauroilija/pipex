@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:52:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/09 09:01:18 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 14:59:51 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,4 @@ void	free_pipex(t_pipex *p)
 	}
 	free (p->cmds);
 	free(p);
-}
-
-int	is_limiter(char *line, char *limiter)
-{
-	size_t	len;
-
-	len = ft_strlen(limiter);
-	if (!line)
-		return (0);
-	if (ft_strncmp(line, limiter, len) == 0
-		&& (line[len] == '\n' || line[len] == '\0'))
-		return (1);
-	return (0);
 }
