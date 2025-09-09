@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/08 11:45:36 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 08:05:36 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ pid_t		exit_codee(pid_t *child_pids, int cmd_count);
 void		safe_exit(char *str);
 void		free_split(char **split);
 void		free_pipex(t_pipex *p);
+int			is_limiter(char *line, char *limiter);
 
 #endif

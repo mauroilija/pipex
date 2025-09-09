@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:11:34 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/08 13:48:13 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 08:59:37 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@
 
 typedef struct s_var
 {
-    size_t	i;
-    size_t	j;
-    size_t	start;
-}   t_var;
+	char	*lines_returned;
+	ssize_t	read_bytes;
+	size_t	i;
+	size_t	j;
+	size_t	start;
+}	t_var;
 
 typedef struct s_list
 {
@@ -106,5 +108,6 @@ void	*ft_edge_cases(int fd, char *stash, ssize_t *read_bytes);
 char	*get_next_line(int fd);
 char	*strjoin_free(char *s1, char *s2);
 char	*free_stash_if_line_null(char *stash, char *line);
+void	free_ptr(void **ptr);
 
 #endif

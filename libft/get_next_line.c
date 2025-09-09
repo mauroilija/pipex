@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 15:10:34 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/01 17:17:47 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 08:53:23 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ char	*print_line(char *stash)
 	line = (char *)malloc(i + 1);
 	if (!line)
 		return (NULL);
-	ft_strlcpy(line, stash, i);
+	ft_memcpy(line, stash, i);
+	line[i] = '\0';
 	return (line);
 }
 
@@ -54,18 +55,6 @@ char	*clean_stash(char *stash)
 	new[j] = '\0';
 	free(stash);
 	return (new);
-}
-
-void	*ft_edge_cases(int fd, char *stash, ssize_t *read_bytes)
-{
-	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);
-	if (!stash)
-		stash = ft_strdup("");
-	if (!stash)
-		return (NULL);
-	*read_bytes = 1;
-	return (stash);
 }
 
 char	*strjoin_free(char *s1, char *s2)
@@ -95,31 +84,61 @@ char	*strjoin_free(char *s1, char *s2)
 	return (s3);
 }
 
+void	free_ptr(void **ptr)
+{
+	if (ptr && *ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}
+
 char	*get_next_line(int fd)
 {
-	ssize_t		read_bytes;
 	char		buffer[BUFFER_SIZE + 1];
 	static char	*stash;
-	char		*line;
+	t_var		p;
 
-	stash = ft_edge_cases(fd, stash, &read_bytes);
+	stash = ft_edge_cases(fd, stash, &p.read_bytes);
 	if (!stash)
 		return (NULL);
-	while (!ft_strchr(stash, '\n') && (read_bytes > 0))
+	while (!ft_strchr(stash, '\n') && (p.read_bytes > 0))
 	{
-		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes > 0)
+		p.read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (p.read_bytes > 0)
 		{
-			buffer[read_bytes] = '\0';
+			buffer[p.read_bytes] = '\0';
 			stash = strjoin_free(stash, buffer);
 			if (!stash)
 				return (NULL);
 		}
 	}
-	if (read_bytes == -1)
+	if (p.read_bytes == -1)
 		return (free(stash), NULL);
-	line = print_line(stash);
+	p.lines_returned = print_line(stash);
 	stash = clean_stash(stash);
-	stash = free_stash_if_line_null(stash, line);
-	return (line);
+	stash = free_stash_if_line_null(stash, p.lines_returned);
+	free_ptr((void **)&stash);
+	return (p.lines_returned);
 }
+
+/*#include <stdio.h>
+int	main(void)
+{
+	int	fd = 1; //open("test.txt", O_RDONLY);
+	char	*result;
+	if(fd < 0)
+	{
+		printf("Error Opening File!!\n");
+		return (1);
+	}
+		else
+		printf("File opened sucessfully!\n");
+	while ((result = get_next_line(fd)) != NULL)
+	{
+		printf("%s", result);
+		free(result);
+	}
+	close(fd);
+	return (0);
+}*/

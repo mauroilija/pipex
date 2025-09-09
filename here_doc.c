@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:47:04 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/08 16:30:57 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 08:56:15 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*here_doc_reader(char *limiter)
 	while (1)
 	{
 		p.lines = get_next_line(0);
-		if (!p.lines || !ft_strcmp(p.lines, limiter))
+		if (!p.lines || is_limiter(p.lines, limiter))
 			return (free(p.lines), p.buffer);
 		p.len = ft_strlen(p.buffer);
 		p.new_len = p.len + ft_strlen(p.lines) + 1;
@@ -55,7 +55,7 @@ void	execute_here_doc(char **av, int argc, char **envp)
 	close(tmp_fd);
 	p = normal_parsing(argc, av, envp, 3);
 	if (!p)
-		safe_exit("Parsinf failed\n");
+		safe_exit("Parsing failed\n");
 	p->infile = open("temp_file.txt", O_RDONLY);
 	if (p->infile < 0)
 		safe_exit("Error opening temp file\n");

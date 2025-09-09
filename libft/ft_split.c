@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 14:24:23 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/08 14:12:32 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/09 09:00:07 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,19 @@ static char	*add_words(const char *str, size_t start, size_t end)
 	return (word);
 }
 
-void free_partial(char **array, size_t count)
+void	free_partial(char **array, size_t count)
 {
-    size_t i = 0;
-    if (!array)
-        return;
-    while (i < count)
-    {
-        free(array[i]);
-        i++;
-    }
-    free(array);
+	size_t	i;
+
+	i = 0;
+	if (!array)
+		return ;
+	while (i < count)
+	{
+		free(array[i]);
+		i++;
+	}
+	free (array);
 }
 
 static int	ft_fill_array(char **array, const char *s, char c)
