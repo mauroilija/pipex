@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:52:33 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/09 14:59:51 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/10 17:04:01 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,28 @@ void	free_split(char **split)
 	free(split);
 }
 
-pid_t	exit_codee(pid_t *child_pids, int cmd_count)
+int	last_exit_code(pid_t *child_pids, int cmd_count)
 {
-	pid_t	exit_code;
-	int		status;
 	int		i;
+	int		status;
+	int		exit_code;
+	pid_t	pid;
 
+	exit_code = 0;
 	i = 0;
 	while (i < cmd_count)
 	{
-		waitpid(child_pids[i], &status, 0);
-		if (i == cmd_count - 1)
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+			continue ;
+		if (pid == child_pids[cmd_count - 1])
 		{
 			if (WIFEXITED(status))
 				exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 				exit_code = 128 + WTERMSIG(status);
+			else
+				exit_code = 1;
 		}
 		i++;
 	}
@@ -70,4 +76,13 @@ void	free_pipex(t_pipex *p)
 	}
 	free (p->cmds);
 	free(p);
+}
+
+void	p_error_exit(char *str, int fd)
+{
+	if (fd < 0)
+	{
+		perror(str);
+		exit (1);
+	}
 }

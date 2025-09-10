@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:47:04 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/09 08:56:15 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/10 12:22:52 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	execute_here_doc(char **av, int argc, char **envp)
 	t_pipex	*p;
 
 	limiter = av[2];
-	tmp_fd = open("temp_file.txt", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	tmp_fd = open("temporary.txt", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd < 0)
-		safe_exit("Error opening file\n");
+		exit(1);
 	output = here_doc_reader(limiter);
 	if (!output)
 		safe_exit("Error readin here_doc\n");
@@ -58,7 +58,7 @@ void	execute_here_doc(char **av, int argc, char **envp)
 		safe_exit("Parsing failed\n");
 	p->infile = open("temp_file.txt", O_RDONLY);
 	if (p->infile < 0)
-		safe_exit("Error opening temp file\n");
+		exit(1);
 	execute(p->cmds, argc, av, p->cmd_count);
 	close(p->infile);
 	unlink("temp_file.txt");

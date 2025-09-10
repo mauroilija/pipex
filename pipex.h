@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 17:18:12 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/09 13:50:15 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/10 16:45:31 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,13 @@ void		child_process(t_cmd cmd, int prev_pipe, t_pipex *p);
 pid_t		execute(t_cmd *cmds, int argc, char **av, int cmd_count);
 void		processes(t_cmd *cmds, t_pipex *p);
 void		execute_here_doc(char **av, int argc, char **envp);
-pid_t		exit_codee(pid_t *child_pids, int cmd_count);
+int			last_exit_code(pid_t *child_pids, int cmd_count);
 //utils
 void		safe_exit(char *str);
 void		free_split(char **split);
 void		free_pipex(t_pipex *p);
 int			is_limiter(char *line, char *limiter);
+void		open_files(int argc, char **av, t_pipex *p);
+void		p_error_exit(char *str, int fd);
 
 #endif

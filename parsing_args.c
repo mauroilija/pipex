@@ -6,7 +6,7 @@
 /*   By: milija-h <milija-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 17:52:50 by milija-h          #+#    #+#             */
-/*   Updated: 2025/09/09 14:58:21 by milija-h         ###   ########.fr       */
+/*   Updated: 2025/09/10 17:03:41 by milija-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,19 @@ t_pipex	*normal_parsing(int argc, char **av, char **envp, int start)
 		c.args = ft_split(av[p->i], ' ');
 		if (!c.args)
 			return (free_pipex(p), NULL);
-		if (!c.args[0])
-			return (free_split(c.args), free_pipex(p), NULL);
 		c.path = get_path(c.args[0], envp);
-		if (!c.path)
-			return (free_split(c.args), free_pipex(p), NULL);
 		p->cmds[p->index].args = c.args;
 		p->cmds[p->index].path = c.path;
+		p->cmds[p->index].envp = envp;
 		p->index++;
 		p->i++;
 	}
 	p->cmds[p->index].args = NULL;
 	p->cmds[p->index].path = NULL;
+	p->cmds[p->index].envp = envp;
 	return (p);
 }
+//maybe just go back to initial solution to not leak, and not do bonus
 
 char	*get_path(char *cmd, char **envp)
 {
@@ -63,7 +62,7 @@ char	*get_path(char *cmd, char **envp)
 		return (free(path_line), NULL);
 	result = fill_full_path(directories, cmd);
 	if (!result)
-		return (free_split(directories), NULL);
+		return (free_split(directories), free(path_line), NULL);
 	free_split(directories);
 	free(path_line);
 	return (result);
