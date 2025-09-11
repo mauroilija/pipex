@@ -25,6 +25,12 @@ void	child_process(t_cmd cmd, int prev_pipe, t_pipex *p)
 	}
 	else if (p->outfile != STDOUT_FILENO)
 		dup2(p->outfile, STDOUT_FILENO);
+	if (!cmd.path)
+    {
+        ft_printf("%s: command not found\n", cmd.args[0]);
+        exit(127);
+    }
+	
 	if (access(cmd.path, F_OK) != 0)
 	{
 		ft_printf("%s: command not found\n", cmd.args[0]);
